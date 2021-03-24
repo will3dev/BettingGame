@@ -5,18 +5,19 @@ from datetime import datetime
 
 @login_manager.user_loader
 def load_user(user_id):
-    return UserWarning.query.get(int(user_id))
+    return User.query.get(int(user_id))
 
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     register_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
     username = db.Column(db.String(20), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, niullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     is_admin = db.Column(db.Integer, nullable=False, default=1)
     account_address = db.Column(db.String(60), nullable=False )
     keystore = db.Column(db.Text, nullable=False)
+    secret = db.Column(db.String(60), nullable=True)
 
     def __repr__(self):
         return f"<USER: {self.id}, {self.username}, {self.register_date}, {'admin' if self.is_admin else 'not admin'}>"

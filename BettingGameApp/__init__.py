@@ -1,3 +1,4 @@
+import os
 from flask import Flask, Blueprint
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
@@ -27,6 +28,10 @@ def create_app(config_class=Config):
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
+
+    @app.before_first_request
+    def create_tables():
+        db.create_all()
 
     # api blueprints
     from BettingGameApp.resources.users import user_api

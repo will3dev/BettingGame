@@ -12,12 +12,24 @@
     <title>Blockchain Game</title>
 </head>
 <body>
+<!-- Alerts -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 
 {% block content %}
+<!-- Page Content -->
 {% endblock content %}
 
 <!-- Bootstrap Bundle with Popper-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-
+<!-- Font Awesome Install -->
+<script src="https://kit.fontawesome.com/9696a88616.js" crossorigin="anonymous"></script>
 </body>
 </html>

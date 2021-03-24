@@ -22,7 +22,7 @@ def validate_password(form, password_inpt):
     # must contain special character: @#!%&
     message = "Your password did not meet minimum requirements."
 
-    _length = len(password_inpt.data)
+    _length = len(password_inpt.data) >= 10
     _lower = re.search(r'[a-z]+', password_inpt.data)
     _upper = re.search(r'[A-Z]+', password_inpt.data)
     _number = re.search(r'[0-9]', password_inpt.data)

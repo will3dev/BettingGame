@@ -1,0 +1,13 @@
+body{
+background-color: black;
+color: white;
+}
+
+.fill {
+    width: 100%;
+    height: 100%;
+}
+
+.top-buffer{
+    top-margin:20px;
+}
