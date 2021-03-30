@@ -1,5 +1,7 @@
 import json
 
+from hexbytes import HexBytes
+
 from BettingGameApp import db
 from BettingGameApp import bcrypt
 from BettingGameApp.models.models import User
@@ -38,7 +40,7 @@ def login_user_decrypt(user, password):
     keystore_encrypted = json.loads(user.keystore)
     private_key = Account.decrypt(keystore_encrypted, password)
 
-    user.keystore = Account.from_key(private_key)
+    user.keystore = private_key.hex()
     user.secret = password
     db.session.commit()
 
@@ -46,11 +48,12 @@ def login_user_decrypt(user, password):
 def logout_user_encrypt(user):
     keystore_encrypted = Account.encrypt(user.keystore, user.secret)
 
-    user.keystore = keystore_encrypted
+    user.keystore = json.dumps(keystore_encrypted)
     user.secret = ''
     db.session.commit()
 
     logout_user()
 
 
-
+def convert_hex_string(hex_string):
+    return bytes.fromhex(hex_string)
