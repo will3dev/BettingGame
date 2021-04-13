@@ -300,7 +300,7 @@ contract BettingGame {
     uint totalOfBetsMade; // in wei
     uint allBets.length;
     */
-    function getLimitedGameData(uint _gameId) public gameIsOpen(_gameId) view returns (address, string memory, uint, uint, uint, uint, uint, uint) {
+    function getLimitedGameData(uint _gameId) public view returns (address, string memory, uint, uint, uint, uint, uint, uint) {
         Game storage game = allGames[_gameId];
         return (
             game.manager,
