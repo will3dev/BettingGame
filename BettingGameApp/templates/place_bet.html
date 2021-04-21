@@ -1,0 +1,145 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>PLACE BET PAGE</h1>
+
+<div class="row justify-content-center">
+    <div class="col">
+        <div class="card text-center">
+            <h8 class="card-header">
+                Status
+            </h8>
+            <div class="card-body">
+                <span class="badge bg-primary">{{ game_data['status'] }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-center">
+            <h8 class="card-header">
+                Manager
+            </h8>
+            <div class="card-body">
+                <span class="badge bg-primary text-truncate" data-bs-toggle="popover" data-bs-trigger="hover focus" title="Manager Address" data-bs-content="{{ game_data['manager'] }}">
+                    {{ game_data['manager'] }}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-center">
+            <h8 class="card-header">
+                Status
+            </h8>
+            <div class="card-body">
+                <span class="badge bg-primary">{{ game_data['bet_min'] }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-center">
+            <h8 class="card-header">
+                Status
+            </h8>
+            <div class="card-body">
+                <span class="badge bg-primary">0 - {{ game_data['val_range'] }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-center">
+            <h8 class="card-header">
+                Status
+            </h8>
+            <div class="card-body">
+                <span class="badge bg-primary">{{ game_data['total_pool'] }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-4">
+        <div class="card w-75 p-3">
+            <h5 class="card-header">Place Bet</h5>
+            <div class="card-body">
+                <form method="POST" action="">
+                    {{ form.hidden_tag() }}
+                    <div class="form-group">
+                        {{ form.game_id.label(class="form-control-label", for="game_id") }}
+
+                        {% if form.game_id.errors %}
+                        {{ form.game_id(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.game_id.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            {{ form.game_id(class="form-control form-control-lg", for="game_id") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.prediction.label(class="form-control-label", for="prediction") }}
+
+                        {% if form.prediction.errors %}
+                        {{ form.prediction(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.prediction.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            {{ form.prediction(class="form-control form-control-lg", for="prediction") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form.bet_amount.label(class="form-control-label", for="bet_amount") }}
+
+                        {% if form.bet_amount.errors %}
+                        {{ form.bet_amount(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.bet_amount.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            {{ form.bet_amount(class="form-control form-control-lg", for="bet_amount") }}
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-8">
+        <table class="table table-hover w-75">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Bet Maker</th>
+                    <th scope="col">Bet Amount</th>
+                    <th scope="col">Prediction</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if bet_data %}
+                    {% for b in bet_data.keys() %}
+                    <tr>
+                        <th scope="row">{{ b + 1}}</th>
+                        <td>{{ bet_data[b]['bet_maker'] }}</td>
+                        <td>{{ bet_data[b]['bet_amount'] }}</td>
+                        <td>{{ bet_data[b]['prediction'] }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <th scope="row">1</th>
+                        <td colspan="3"> NO DATA AVAILABLE</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock content %}

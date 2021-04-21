@@ -1,6 +1,4 @@
 body{
-background-color: black;
-color: white;
 }
 
 .fill {
@@ -10,4 +8,10 @@ color: white;
 
 .top-buffer{
     top-margin:20px;
+}
+
+.card-body{
+}
+
+.card-text{
 }
