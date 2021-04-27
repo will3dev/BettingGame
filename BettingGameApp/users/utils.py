@@ -40,7 +40,7 @@ def login_user_decrypt(user, password):
     keystore_encrypted = json.loads(user.keystore)
     private_key = Account.decrypt(keystore_encrypted, password)
 
-    user.keystore = private_key.hex()
+    user.keystore = private_key
     user.secret = password
     db.session.commit()
 

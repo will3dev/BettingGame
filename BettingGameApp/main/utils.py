@@ -1,10 +1,14 @@
-
+import time
 from web3 import Web3, exceptions
 from BettingGameApp.w3.BettingGameContract import BettingGameContract
 from BettingGameApp.w3.Connection import Rinkeby_Connection
 
 bgc = BettingGameContract().contract()
 w3 = Rinkeby_Connection().w3
+
+
+def convert_epoch_time(epoch):
+    return time.strftime("%b %d, %Y %H:%M", time.localtime(epoch))
 
 
 class GameDetails:
@@ -18,10 +22,10 @@ class GameDetails:
         manager, status, create_time, bet_min, bet_fee, val_range, total_pool, bets_count = data
 
         game_data = {
-            'id': id,
+            'id': game_id,
             'manager': manager,
             'status': status.upper(),
-            'create_time': create_time,
+            'create_time': convert_epoch_time(create_time),
             'bet_min': Web3.fromWei(bet_min, 'ether'),
             'bet_fee': bet_fee,
             'val_range': val_range,
@@ -46,7 +50,7 @@ class GameDetails:
             if data:
                 game_data.append(data)
 
-        self.all_games= sorted(game_data, key=lambda x: x['id'], reverse=True)
+        self.all_games = sorted(game_data, key=lambda x: x['id'], reverse=True)
         self.game_count = number_of_games
 
         return game_data
@@ -79,7 +83,7 @@ class GameDetails:
             game_data.append(
                 {
                     'manager': manager,
-                    'create_time': create_time,
+                    'create_time': convert_epoch_time(create_time),
                     'bet_min': Web3.fromWei(bet_min, 'ether'),
                     'bet_fee': bet_fee,
                     'max_range': max_range,
@@ -121,7 +125,8 @@ class Bet:
 
     def get_event_details(self):
         event = bgc.events.BetMade().processReceipt(self.tx_receipt)
-        event_data = event['args']
+        print(event)
+        event_data = dict(event[0]['args'])
         event_data['betAmount'] = Web3.fromWei(event_data.get('betAmount'), 'ether')
         self.event_data = event_data
         self.event_full = event

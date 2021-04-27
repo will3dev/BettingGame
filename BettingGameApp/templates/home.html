@@ -1,60 +1,139 @@
 {% extends "layout.html" %}
 {% block content %}
 <h1>HOME PAGE</h1>
+
 <div class="row justify-content-center">
     <div class="col-8">
-        {% for g in game_data %}
-        <div class="card px-4">
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-8">
-                        <i class="fas fa-chevron-right fa-1x"></i>
-                        Game ID {{ g['id'] }}: {{ g['status'] }}
-                    </div>
-                    <div class="col-4">
-                        <a type="button" class="btn btn-success" href="{{ url_for('main.place_bet', game_id=g['id']) }}">Place Bet</a>
-                    </div>
-                </div>
+        <table class="table table-hover shadow">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Open Date</th>
+                    <th scope="col">Total Pool</th>
+                    <th scope="col">See More</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if game_data %}
+                    {% for g in game_data %}
+                    <tr>
+                        <th scope="row">{{ g['id'] }}</th>
+                        <td>{{ g['status'] }}</td>
+                        <td>{{ g['create_time'] }}</td>
+                        <td>{{ g['total_pool'] }}</td>
+                        <td><div type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#game_ID_{{ g['id'] }}">Click Here</div></td>
+                    </tr>
 
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-4">
-                        <div class="card-text">
-                            {{ g['create_time'] }}
+                    <div class="modal fade" id="game_ID_{{ g['id'] }}" tabindex="-1" aria-labelledby="game_ID_{{ g['id'] }}Label" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="game_ID_{{ g['id'] }}Label">Game {{ g['id'] }} Data</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container-fluid">
+                                        <div class="row justify-content-start">
+                                            <div class="col-4">
+                                                <h6>Manager</h6>
+                                            </div>
+                                            <div class="col-2">
+                                                <span class="badge bg-secondary">
+                                                    <i class="fas fa-arrow-circle-right"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <h6 class="text-truncate" data-bs-toggle="popover" data-bs-trigger="hover focus" title="Manager Address" data-bs-content="{{ g['manager'] }}">
+                                                    {{ g['manager'] }}
+                                                </h6>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-start">
+                                            <div class="col-4">
+                                                <h6>Status</h6>
+                                            </div>
+                                            <div class="col-2">
+                                                <span class="badge bg-secondary">
+                                                    <i class="fas fa-arrow-circle-right"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <h6>{{ g['status'] }}</h6>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-start">
+                                            <div class="col-4">
+                                                <h6>Open Since</h6>
+                                            </div>
+                                            <div class="col-2">
+                                                <span class="badge bg-secondary">
+                                                    <i class="fas fa-arrow-circle-right"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <h6>{{ g['create_time'] }}</h6>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-start">
+                                            <div class="col-4">
+                                                <h6>Bet Minimum</h6>
+                                            </div>
+                                            <div class="col-2">
+                                                <span class="badge bg-secondary">
+                                                    <i class="fas fa-arrow-circle-right"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <h6>{{ g['bet_min'] }} <i class="fab fa-ethereum"></i></h6>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-start">
+                                            <div class="col-4">
+                                                <h6>Bet Range</h6>
+                                            </div>
+                                            <div class="col-2">
+                                                <span class="badge bg-secondary">
+                                                    <i class="fas fa-arrow-circle-right"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <h6>0 - {{ g['val_range'] }}</h6>
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-start">
+                                            <div class="col-4">
+                                                <h6>Total Pool</h6>
+                                            </div>
+                                            <div class="col-2">
+                                                <span class="badge bg-secondary">
+                                                    <i class="fas fa-arrow-circle-right"></i>
+                                                </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <h6 class="text-truncate">{{ g['total_pool'] }} <i class="fab fa-ethereum"></i></h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <a class="btn btn-primary" href="{{ url_for('main.place_bet', game_id=g['id']) }}">Place Bet</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="card-text">
-                            {{ g['total_pool'] }}
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="card-text text-truncate" data-bs-toggle="popover" data-bs-trigger="hover focus" title="Manager Address" data-bs-content="{{ g['manager'] }}">
-                            {{ g['manager'] }}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-4">
-                        <button type="button" class="btn btn-primary">
-                            Max Prediction <span class="badge bg-secondary">{{ g['val_range'] }}</span>
-                        </button>
-                    </div>
-                    <div class="col-4">
-                        <button type="button" class="btn btn-primary">
-                            Bet Minimum <span class="badge bg-secondary">{{ g['bet_min'] }}</span>
-                        </button>
-                    </div>
-                    <div class="col-4">
-                        <button type="button" class="btn btn-primary">
-                            Bet Count <span class="badge bg-secondary">{{ g['bets_count'] }}</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <th scope="row">0</th>
+                        <td colspan="4"> NO DATA AVAILABLE</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
     </div>
 </div>
+
+
 {% endblock content %}

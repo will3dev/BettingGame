@@ -14,8 +14,9 @@ main = Blueprint('main', __name__)
 @main.route('/home')
 @login_required
 def home():
-    game_data = GameDetails.get_all_games()
-    all_games = game_data.all_games
+    gd = GameDetails()
+    gd.get_all_games()
+    all_games = gd.all_games
     return render_template("home.html", game_data=all_games)
 
 
@@ -30,8 +31,8 @@ def place_bet(game_id):
     bd.get_bet_data(limit_data=True)
 
     if form.validate_on_submit():
-        key = Account.decrypt(current_user.keystore, os.environ.get('TEST_PASSWORD'))
-        account = Account.from_key(key)
+        # key = Account.decrypt(current_user.keystore, os.environ.get('TEST_PASSWORD'))
+        account = Account.from_key(current_user.keystore)
         bet = Bet(game_id=form.game_id.data, prediction=form.prediction.data, bet_amount=form.bet_amount.data)
         bet.place_bet(account)
 

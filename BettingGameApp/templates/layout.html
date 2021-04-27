@@ -12,6 +12,34 @@
     <title>Blockchain Game</title>
 </head>
 <body>
+<!-- This is to hide nav bar from reg & login page -->
+{% if current_user.is_authenticated %}
+<div class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand mb-0 h1 px-2" href="{{ url_for('main.home') }}">
+                ChainGamble <i class="fas fa-dice"></i>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Show Menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="collapse" id="menu">
+    <div class="bg-dark p-4">
+        <h6>
+            <a class="nav-link text-white h4" href="#">Profile</a>
+        </h6>
+        <h6>
+            <a class="nav-link text-white h4" href="#">Manage Game</a>
+        </h6>
+        <h6>
+            <a class="nav-link text-white h4" href="{{ url_for('users.logout') }}">Logout</a>
+        </h6>
+    </div>
+</div>
+{% endif %}
 <!-- Alerts -->
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}

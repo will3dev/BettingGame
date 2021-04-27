@@ -1,14 +1,20 @@
 from flask import (Blueprint, render_template, redirect,
                    url_for, flash)
-from flask_login import current_user
+from flask_login import current_user, login_required
 from BettingGameApp import bcrypt
 from BettingGameApp.users.forms import LoginForm, RegisterForm
-from BettingGameApp.users.utils import register_user, login_user_decrypt, logout_user_encrypt
+from BettingGameApp.users.utils import register_user, login_user_decrypt, logout_user_encrypt, UserProfile
 from BettingGameApp.models.models import User
-
 
 users = Blueprint('users', __name__)
 
+
+@users.route("/profile", methods=["GET"])
+@login_required
+def profile():
+    user = UserProfile.get_data(current_user.account_address)
+
+    return render_template("profile.html", user=user)
 
 @users.route("/login", methods=["GET", "POST"])
 def login():
